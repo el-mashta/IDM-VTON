@@ -11,11 +11,19 @@ echo "Starting custom setup for IDM-VTON with DressCode..."
 echo "Installing dependencies..."
 apt-get update && apt-get install -y wget unzip git git-lfs locales sudo libgl1-mesa-glx libglib2.0-0
 
-# 2. Clone Your Modified Repository
-echo "Cloning your forked IDM-VTON repository..."
-git clone https://github.com/el-mashta/IDM-VTON.git /workspace/IDM-VTON
+# 2. Clone Your Modified Repository  
+echo "Cloning your forked IDM-VTON repository (dcgradio branch)..."
+git clone -b dcgradio https://github.com/el-mashta/IDM-VTON.git /workspace/IDM-VTON
 cd /workspace/IDM-VTON
 
+# Verify branch and DressCode features
+echo "Current branch: $(git branch --show-current)"
+echo "Checking for DressCode support..."
+if grep -q "category.*dropdown" gradio_demo/app.py; then
+    echo "✅ DressCode category support detected"
+else
+    echo "❌ DressCode support not found in app.py"
+fi
 # 3. Install Python Dependencies
 echo "Installing Python dependencies..."
 pip install -r requirements.txt
